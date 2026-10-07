@@ -1,6 +1,9 @@
 package com.example.student_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(schema = "student_management", name = "course")
@@ -11,20 +14,30 @@ public class Course {
     private Long id;
 
     private String courseName;
-
     private String courseDescription;
 
-    // Default Constructor
+    // Student <-> Course
+    @ManyToMany(mappedBy = "courses")
+    @JsonIgnore
+    private List<Student> students;
+
+    // Teacher <-> Course
+    @ManyToMany(mappedBy = "courses")
+    @JsonIgnore
+    private List<Teacher> teachers;
+
+
     public Course() {
     }
 
-    // Parameterized Constructor
-    public Course(String courseName, String courseDescription) {
+    public Course(
+            String courseName,
+            String courseDescription) {
+
         this.courseName = courseName;
         this.courseDescription = courseDescription;
     }
 
-    // Getter and Setter for id
     public Long getId() {
         return id;
     }
@@ -33,7 +46,6 @@ public class Course {
         this.id = id;
     }
 
-    // Getter and Setter for courseName
     public String getCourseName() {
         return courseName;
     }
@@ -42,12 +54,29 @@ public class Course {
         this.courseName = courseName;
     }
 
-    // Getter and Setter for courseDescription
     public String getCourseDescription() {
         return courseDescription;
     }
 
-    public void setCourseDescription(String courseDescription) {
+    public void setCourseDescription(
+            String courseDescription) {
+
         this.courseDescription = courseDescription;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 }

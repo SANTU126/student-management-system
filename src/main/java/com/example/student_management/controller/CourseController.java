@@ -1,6 +1,7 @@
 package com.example.student_management.controller;
 
 import com.example.student_management.entity.Course;
+import com.example.student_management.entity.Teacher;
 import com.example.student_management.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,4 +82,36 @@ public class CourseController {
 
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{courseId}/teacher/{teacherId}")
+    public ResponseEntity<Course> assignTeacherToCourse(
+            @PathVariable Long courseId,
+            @PathVariable Long teacherId) {
+
+        Course course = courseService.assignTeacherToCourse(
+                courseId,
+                teacherId
+        );
+
+        return ResponseEntity.ok(course);
+    }
+    @GetMapping("/{courseId}/teachers")
+    public ResponseEntity<List<Teacher>> getTeachersOfCourse(
+            @PathVariable Long courseId) {
+
+        List<Teacher> teachers =
+                courseService.getTeachersOfCourse(courseId);
+
+        return ResponseEntity.ok(teachers);
+    }
+
+    // GET NUMBER OF TEACHERS OF A COURSE
+    @GetMapping("/{courseId}/teachers/count")
+    public ResponseEntity<Integer> getTeacherCountOfCourse(
+            @PathVariable Long courseId) {
+
+        return ResponseEntity.ok(
+                courseService.getTeacherCountOfCourse(courseId)
+        );
+    }
+
 }
